@@ -119,6 +119,60 @@
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.ct-services-visual {
+	align-items: center;
+	background:
+		radial-gradient(circle at 20% 20%, rgba(245, 158, 11, .22), transparent 34%),
+		linear-gradient(135deg, #0f2728 0%, #124a45 52%, #0c1f23 100%);
+	border: 1px solid rgba(185, 222, 210, .45);
+	border-radius: 8px;
+	box-shadow: 0 22px 56px rgba(21, 36, 33, 0.16);
+	display: flex;
+	grid-column: span 2;
+	justify-content: center;
+	margin: 0;
+	min-height: 100%;
+	overflow: hidden;
+	padding: 30px;
+	position: relative;
+}
+
+.ct-services-visual::before {
+	background: linear-gradient(90deg, #0f766e, #f59e0b);
+	content: "";
+	height: 3px;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 1;
+}
+
+.ct-services-visual::after {
+	color: rgba(255, 255, 255, .92);
+	content: "Clean installs. Connected protection.";
+	font-size: 18px;
+	font-weight: 800;
+	left: 28px;
+	line-height: 1.25;
+	max-width: 260px;
+	position: absolute;
+	top: 28px;
+	z-index: 2;
+}
+
+.ct-services-visual img {
+	display: block;
+	filter: drop-shadow(0 24px 32px rgba(0, 0, 0, .28));
+	max-height: 340px;
+	max-width: 84%;
+	object-fit: contain;
+	position: relative;
+	transform: translateX(10%);
+	width: auto;
+	z-index: 1;
+}
+
 .ct-packages-head {
 	margin-top: 72px;
 }
@@ -758,6 +812,10 @@ body.ct-modal-open {
 	.ct-packages-grid,
 	.ct-products-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.ct-services-visual {
+		display: none;
 	}
 }
 
