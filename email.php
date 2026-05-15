@@ -1,9 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
-
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 
@@ -36,9 +33,81 @@ function field(array $data, string $key, int $maxLength): string
     return substr($value, 0, $maxLength);
 }
 
-function clean_header_value(string $value): string
+function config_value(string $key): string
 {
-    return trim(str_replace(["\r", "\n"], ' ', $value));
+    static $fileConfig = null;
+
+    $envValue = getenv($key);
+    if (is_string($envValue) && $envValue !== '') {
+        return $envValue;
+    }
+
+    if ($fileConfig === null) {
+        $configPath = dirname(__DIR__) . '/calltech-telegram.env';
+        $fileConfig = is_file($configPath) ? parse_ini_file($configPath, false, INI_SCANNER_RAW) : [];
+        if (!is_array($fileConfig)) {
+            $fileConfig = [];
+        }
+    }
+
+    return trim((string)($fileConfig[$key] ?? ''));
+}
+
+function escape_html(string $value): string
+{
+    return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+function telegram_message(array $lead): string
+{
+    $lines = [
+        '<b>New CallTech quote request</b>',
+        '',
+        '<b>Service:</b> ' . escape_html($lead['Service']),
+        '<b>Name:</b> ' . escape_html($lead['Name']),
+        '<b>Phone:</b> ' . escape_html($lead['Phone']),
+        '<b>Email:</b> ' . escape_html($lead['Email']),
+        '<b>City / ZIP:</b> ' . escape_html($lead['City / ZIP']),
+        '<b>Project details:</b>',
+        escape_html($lead['Project details']),
+        '',
+        '<b>Lead type:</b> ' . escape_html($lead['Lead type']),
+        '<b>Page:</b> ' . escape_html($lead['Page']),
+        '<b>IP:</b> ' . escape_html($lead['IP address']),
+        '<b>Submitted:</b> ' . escape_html($lead['Submitted at']),
+    ];
+
+    return implode("\n", $lines);
+}
+
+function post_to_telegram(string $botToken, string $chatId, string $message): bool
+{
+    $url = 'https://api.telegram.org/bot' . rawurlencode($botToken) . '/sendMessage';
+    $payload = http_build_query([
+        'chat_id' => $chatId,
+        'text' => $message,
+        'parse_mode' => 'HTML',
+        'disable_web_page_preview' => 'true',
+    ]);
+
+    $context = stream_context_create([
+        'http' => [
+            'method' => 'POST',
+            'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
+                "Content-Length: " . strlen($payload) . "\r\n",
+            'content' => $payload,
+            'timeout' => 10,
+            'ignore_errors' => true,
+        ],
+    ]);
+
+    $response = file_get_contents($url, false, $context);
+    if ($response === false) {
+        return false;
+    }
+
+    $decoded = json_decode($response, true);
+    return is_array($decoded) && ($decoded['ok'] ?? false) === true;
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -90,24 +159,12 @@ if (strlen($message) < 10) {
     respond(422, false, 'Please add a few project details.');
 }
 
-$smtpHost = getenv('CALLTECH_SMTP_HOST') ?: '';
-$smtpUser = getenv('CALLTECH_SMTP_USER') ?: '';
-$smtpPass = getenv('CALLTECH_SMTP_PASS') ?: '';
-$smtpPort = (int)(getenv('CALLTECH_SMTP_PORT') ?: 587);
-$mailTo = getenv('CALLTECH_MAIL_TO') ?: '';
-$mailFrom = getenv('CALLTECH_MAIL_FROM') ?: $smtpUser;
-$mailFromName = getenv('CALLTECH_MAIL_FROM_NAME') ?: 'CallTech Website';
+$botToken = config_value('CALLTECH_TELEGRAM_BOT_TOKEN');
+$chatId = config_value('CALLTECH_TELEGRAM_CHAT_ID');
 
-if ($smtpHost === '' || $smtpUser === '' || $smtpPass === '' || $mailTo === '' || $mailFrom === '') {
-    respond(500, false, 'Mail service is not configured.');
+if ($botToken === '' || $chatId === '') {
+    respond(500, false, 'Telegram notifications are not configured.');
 }
-
-$autoloadPath = __DIR__ . '/vendor/autoload.php';
-if (!is_file($autoloadPath)) {
-    respond(500, false, 'Mail dependencies are not installed.');
-}
-
-require $autoloadPath;
 
 $lead = [
     'Lead type' => $type,
@@ -122,32 +179,8 @@ $lead = [
     'Submitted at' => gmdate('Y-m-d H:i:s') . ' UTC',
 ];
 
-$bodyLines = [];
-foreach ($lead as $key => $value) {
-    $bodyLines[] = $key . ': ' . $value;
-}
-
-try {
-    $mail = new PHPMailer(true);
-    $mail->isSMTP();
-    $mail->Host = $smtpHost;
-    $mail->SMTPAuth = true;
-    $mail->Username = $smtpUser;
-    $mail->Password = $smtpPass;
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = $smtpPort;
-
-    $mail->CharSet = 'UTF-8';
-    $mail->setFrom(clean_header_value($mailFrom), clean_header_value($mailFromName));
-    $mail->addAddress(clean_header_value($mailTo), 'CallTech');
-    $mail->addReplyTo(clean_header_value($email), clean_header_value($name));
-
-    $mail->isHTML(false);
-    $mail->Subject = 'New CallTech quote request: ' . clean_header_value($service);
-    $mail->Body = implode("\r\n", $bodyLines);
-
-    $mail->send();
-    respond(200, true, 'Thank you. Your request was sent and we will follow up shortly.');
-} catch (Exception $exception) {
+if (!post_to_telegram($botToken, $chatId, telegram_message($lead))) {
     respond(500, false, 'Message could not be sent. Please call us or try again later.');
 }
+
+respond(200, true, 'Thank you. Your request was sent and we will follow up shortly.');
