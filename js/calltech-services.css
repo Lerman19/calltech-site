@@ -123,8 +123,8 @@
 .ct-services-visual {
 	align-self: stretch;
 	background:
-		linear-gradient(180deg, rgba(16, 32, 29, .02), rgba(16, 32, 29, .16)),
-		url("../wp-content/uploads/2023/services/smart-home-house-filler.jpg") center center / cover no-repeat;
+		linear-gradient(180deg, rgba(16, 32, 29, .02), rgba(16, 32, 29, .10)),
+		url("../wp-content/uploads/2023/06/h5-bg-img03.jpg") center center / cover no-repeat;
 	border: 1px solid #dbe5e1;
 	border-radius: 8px;
 	box-shadow: 0 22px 56px rgba(21, 36, 33, 0.16);
@@ -139,7 +139,7 @@
 }
 
 .ct-services-visual::before {
-	background: linear-gradient(180deg, rgba(16, 32, 29, .02), rgba(16, 32, 29, .20));
+	background: linear-gradient(90deg, rgba(15, 118, 110, .10), rgba(245, 158, 11, .08));
 	bottom: 0;
 	content: "";
 	left: 0;
