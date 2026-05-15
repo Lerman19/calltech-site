@@ -1,0 +1,79 @@
+.elementor-603 .elementor-element.elementor-element-fc549b4 {
+  --display: flex;
+  --flex-direction: column;
+  --container-widget-width: 100%;
+  --container-widget-height: initial;
+  --container-widget-flex-grow: 0;
+  --container-widget-align-self: initial;
+  --flex-wrap-mobile: wrap;
+  --background-transition: 0.3s;
+  --padding-top: 64px;
+  --padding-bottom: 64px;
+  --padding-left: 30px;
+  --padding-right: 30px;
+}
+.elementor-603
+  .elementor-element.elementor-element-fc549b4:not(
+    .elementor-motion-effects-element-type-background
+  ),
+.elementor-603
+  .elementor-element.elementor-element-fc549b4
+  > .elementor-motion-effects-container
+  > .elementor-motion-effects-layer {
+  background-image: url(../../../uploads/2023/06/Breadcrumb-faq.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+.elementor-603 .elementor-element.elementor-element-fc549b4,
+.elementor-603 .elementor-element.elementor-element-fc549b4:before {
+  --border-transition: 0.3s;
+}
+.elementor-603
+  .elementor-element.elementor-element-e88df52
+  .woocommerce-breadcrumb {
+  color: #fff;
+  font-family: var(--e-global-typography-primary-font-family), Sans-serif;
+  font-weight: var(--e-global-typography-primary-font-weight);
+  text-align: center;
+}
+.elementor-603
+  .elementor-element.elementor-element-e88df52
+  .woocommerce-breadcrumb
+  i {
+  color: #fff;
+}
+.elementor-603
+  .elementor-element.elementor-element-e88df52
+  .woocommerce-breadcrumb
+  > a:not(:hover) {
+  color: #fff;
+}
+.elementor-603
+  .elementor-element.elementor-element-e88df52
+  .woocommerce-breadcrumb
+  a {
+  font-family: var(--e-global-typography-primary-font-family), Sans-serif;
+  font-weight: var(--e-global-typography-primary-font-weight);
+}
+.elementor-603
+  .elementor-element.elementor-element-e88df52
+  .priotech-woocommerce-title {
+  text-align: center;
+  color: #fff;
+  font-family: var(--e-global-typography-secondary-font-family), Sans-serif;
+  font-weight: var(--e-global-typography-secondary-font-weight);
+}
+@media (max-width: 767px) {
+  .elementor-603 .elementor-element.elementor-element-fc549b4 {
+    --padding-top: 60px;
+    --padding-bottom: 60px;
+    --padding-left: 15px;
+    --padding-right: 15px;
+  }
+  .elementor-603
+    .elementor-element.elementor-element-e88df52
+    .priotech-woocommerce-title {
+    margin: 0 0 15px;
+  }
+}
