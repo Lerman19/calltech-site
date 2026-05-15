@@ -64,6 +64,7 @@
       label: label || undefined,
       service: dataset.service || cardDataset.service || undefined,
       package: dataset.package || cardDataset.package || undefined,
+      product: dataset.product || cardDataset.product || undefined,
       stripe_link_key: dataset.stripeLinkKey || undefined,
       commerce_category: dataset.commerceCategory || undefined,
       value: dataset.price ? Number(dataset.price) : undefined,
@@ -120,9 +121,9 @@
   function getStripeUrl(element) {
     var dataset = element.dataset || {};
     var explicitUrl = dataset.stripeUrl;
-    var category = dataset.commerceCategory || (dataset.commerceAction === "buy-package" ? "packages" : "deposits");
+    var category = dataset.commerceCategory || (dataset.commerceAction === "buy-package" ? "packages" : dataset.commerceAction === "buy-product" ? "products" : "deposits");
     var links = (config.stripePaymentLinks && config.stripePaymentLinks[category]) || {};
-    var key = dataset.stripeLinkKey || normalizeKey(dataset.package || dataset.service || "default");
+    var key = dataset.stripeLinkKey || normalizeKey(dataset.product || dataset.package || dataset.service || "default");
     var url = explicitUrl || links[key] || links.default;
 
     if (!url || url === "#") {
@@ -130,6 +131,24 @@
     }
 
     return url;
+  }
+
+  function buildFallbackPaymentUrl(element) {
+    var dataset = element.dataset || {};
+    var base = config.fallbackPaymentUrl || config.fallbackQuoteUrl || "contact.html";
+    var separator = base.indexOf("?") === -1 ? "?" : "&";
+    var item = dataset.product || dataset.package || dataset.service || textOf(element);
+    var params = [
+      ["item", item],
+      ["category", dataset.commerceCategory || ""],
+      ["payment", dataset.commerceAction || "payment"]
+    ].filter(function (pair) {
+      return pair[1];
+    }).map(function (pair) {
+      return encodeURIComponent(pair[0]) + "=" + encodeURIComponent(pair[1]);
+    }).join("&");
+
+    return params ? base + separator + params : base;
   }
 
   function isQuoteLink(element) {
@@ -176,10 +195,11 @@
       return;
     }
 
-    if (action === "pay-deposit" || action === "buy-package") {
+    if (action === "pay-deposit" || action === "buy-package" || action === "buy-product") {
       var stripeUrl = getStripeUrl(target);
+      var eventName = action === "buy-product" ? "buy_product_click" : "pay_deposit_click";
 
-      track("pay_deposit_click", payload);
+      track(eventName, payload);
 
       if (stripeUrl) {
         event.preventDefault();
@@ -187,9 +207,9 @@
         return;
       }
 
-      if (target.getAttribute("href") === "#" || target.tagName.toLowerCase() === "button") {
+      if (target.getAttribute("href") === "#" || target.getAttribute("href") === "#pay-deposit" || target.tagName.toLowerCase() === "button") {
         event.preventDefault();
-        window.location.href = config.fallbackQuoteUrl || "contact.html";
+        window.location.href = buildFallbackPaymentUrl(target);
       }
 
       return;

@@ -21,10 +21,34 @@ window.CallTechCommerceConfig = {
       wifiCoverageUpgrade: "#",
       homeTheaterStarter: "#",
       wholeHomeProtection: "#"
+    },
+    products: {
+      securityCameraKit: "#",
+      videoDoorbellKit: "#",
+      meshWifiKit: "#",
+      smartLockKit: "#",
+      homeTheaterSetupKit: "#",
+      consultation: "#"
     }
   },
 
   fallbackQuoteUrl: "contact.html",
+  fallbackPaymentUrl: "contact.html?payment=request",
+
+  depositAmounts: {
+    default: 99,
+    securityCameraInstallation: 99,
+    videoDoorbellSmartLock: 79,
+    lowVoltageWiring: 149,
+    homeTheaterInstallation: 99,
+    smartHomeHubSetup: 79,
+    unifiedHomeProtection: 149,
+    starterCameraSetup: 99,
+    smartEntryPackage: 79,
+    wifiCoverageUpgrade: 79,
+    homeTheaterStarter: 99,
+    wholeHomeProtection: 149
+  },
 
   // Future buttons/cards can use:
   // data-commerce-action="pay-deposit|buy-package|quote|package-view|service-view"

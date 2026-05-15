@@ -48,6 +48,11 @@
     "wifi-coverage-upgrade": "Wi-Fi Coverage Upgrade",
     "home-theater-starter": "Home Theater Starter",
     "whole-home-protection": "Whole Home Protection",
+    "security-camera-starter-kit": "Security Camera Starter Kit",
+    "video-doorbell-kit": "Video Doorbell Kit",
+    "mesh-wifi-upgrade-kit": "Mesh Wi-Fi Upgrade Kit",
+    "smart-lock-kit": "Smart Lock Kit",
+    "home-theater-setup-kit": "Home Theater Setup Kit",
   };
 
   function setStatus(message, type) {
@@ -118,8 +123,9 @@
 
   function prefillFromUrl() {
     var params = new URLSearchParams(window.location.search);
-    var requested = params.get("service") || params.get("package");
+    var requested = params.get("service") || params.get("package") || params.get("product") || params.get("item");
     var serviceField = form.elements.service;
+    var messageField = form.elements.message;
 
     if (!requested || !serviceField) {
       return;
@@ -131,6 +137,10 @@
     });
 
     serviceField.value = matchingOption ? value : "Other / Not Sure";
+
+    if (messageField && !messageField.value && params.get("payment")) {
+      messageField.value = "I would like to pay online for: " + value + ". Please send me the correct checkout link.";
+    }
   }
 
   prefillFromUrl();
