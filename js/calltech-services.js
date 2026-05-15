@@ -127,131 +127,6 @@
 			quoteHref: 'contact.html?service=smart-wifi-network-setup',
 			paymentCategory: 'deposits',
 			paymentKey: 'networkSetup'
-		},
-		'starter-camera': {
-			type: 'Package',
-			title: 'Starter Camera Setup',
-			image: 'wp-content/uploads/2023/services/sec-camera.jpg',
-			description: 'A practical two-camera starting point for homeowners who want coverage at the most important entry points.',
-			included: ['Two camera mounting points', 'App setup and account connection', 'Basic alert tuning', 'Recording configuration support'],
-			bestFor: ['Front entry', 'Driveway', 'Garage', 'Small homes'],
-			note: 'A $99 online deposit reserves the appointment and is applied to the final invoice. Hardware, extra wiring, and final balance are confirmed before work begins.',
-			price: '99',
-			quoteHref: 'contact.html?package=starter-camera-setup',
-			paymentCategory: 'packages',
-			paymentKey: 'starterCameraSetup'
-		},
-		'entry-package': {
-			type: 'Package',
-			title: 'Smart Entry Package',
-			image: 'wp-content/uploads/2023/services/security-cameras.png',
-			description: 'A front door upgrade with a smart lock and video doorbell so you can see visitors and manage access from your phone.',
-			included: ['Doorbell installation', 'Smart lock installation', 'Guest code setup', 'Notification walkthrough'],
-			bestFor: ['Front doors', 'Rental access', 'Guest entry', 'Package visibility'],
-			note: 'A $79 online deposit reserves the appointment and is applied to the final invoice. A compatibility check may be needed for door thickness, deadbolt style, and doorbell wiring.',
-			price: '79',
-			quoteHref: 'contact.html?package=smart-entry-package',
-			paymentCategory: 'packages',
-			paymentKey: 'smartEntryPackage'
-		},
-		'wifi-package': {
-			type: 'Package',
-			title: 'Wi-Fi Coverage Upgrade',
-			image: 'wp-content/uploads/2023/06/wifi.webp',
-			description: 'A focused network upgrade for better coverage in offices, bedrooms, garages, and outdoor device zones.',
-			included: ['Coverage review', 'Router or mesh setup', 'Access point placement guidance', 'Smart device reconnection help'],
-			bestFor: ['Home offices', 'Smart cameras', 'Streaming rooms', 'Dead zones'],
-			note: 'A $79 online deposit reserves the appointment and is applied to the final invoice. Equipment can be customer-provided or selected after a consultation.',
-			price: '79',
-			quoteHref: 'contact.html?package=wifi-coverage-upgrade',
-			paymentCategory: 'packages',
-			paymentKey: 'wifiCoverageUpgrade'
-		},
-		'theater-package': {
-			type: 'Package',
-			title: 'Home Theater Starter',
-			image: 'wp-content/uploads/2023/services/home-t-desc.jpg',
-			description: 'A clean starter setup for mounting a TV, reducing cable clutter, and getting streaming or basic audio working properly.',
-			included: ['TV mounting support', 'Streaming device setup', 'Cable management', 'Basic audio configuration'],
-			bestFor: ['Living rooms', 'Apartments', 'Media corners', 'New TVs'],
-			note: 'A $99 online deposit reserves the appointment and is applied to the final invoice. Please provide the TV size, wall type, and mount details before the appointment.',
-			price: '99',
-			quoteHref: 'contact.html?package=home-theater-starter',
-			paymentCategory: 'packages',
-			paymentKey: 'homeTheaterStarter'
-		},
-		'whole-home-package': {
-			type: 'Package',
-			title: 'Whole Home Protection',
-			image: 'wp-content/uploads/2023/services/video-surv.jpg',
-			description: 'A larger protection package for homeowners who want cameras, smart entry, hub setup, and mobile alerts working together.',
-			included: ['Whole home walkthrough', 'Device plan by entry point', 'Camera and smart entry setup', 'Unified mobile controls'],
-			bestFor: ['Single-family homes', 'Families', 'Multi-entry homes', 'Full security upgrades'],
-			note: 'A $149 online deposit starts the planning appointment and is applied to the final invoice. This package begins with a consultation so the system fits the home layout and customer priorities.',
-			price: '149',
-			quoteHref: 'contact.html?package=whole-home-protection',
-			paymentCategory: 'packages',
-			paymentKey: 'wholeHomeProtection'
-		},
-		'camera-kit': {
-			type: 'Product',
-			title: 'Security Camera Starter Kit',
-			image: 'wp-content/uploads/2023/services/sec-camera.jpg',
-			description: 'A practical starter bundle for homeowners who want outdoor coverage with app access and professional installation guidance.',
-			included: ['Camera recommendation', 'Mounting and placement plan', 'Recording and alert setup', 'Mobile app walkthrough'],
-			bestFor: ['Driveways', 'Front entries', 'Garages', 'Small homes'],
-			note: 'Use Buy Now after the final equipment choice is confirmed. If you are not sure which camera fits the home, request a quote first.',
-			quoteHref: 'contact.html?product=security-camera-starter-kit',
-			paymentCategory: 'products',
-			paymentKey: 'securityCameraKit'
-		},
-		'doorbell-kit': {
-			type: 'Product',
-			title: 'Video Doorbell Kit',
-			image: 'wp-content/uploads/2023/services/security-cameras.png',
-			description: 'A front-door upgrade built around visitor video, package visibility, notifications, and phone-based access.',
-			included: ['Doorbell compatibility check', 'Transformer and wiring review', 'App setup', 'Notification walkthrough'],
-			bestFor: ['Front doors', 'Package deliveries', 'Rental access', 'Busy households'],
-			note: 'Buy Now is best after wiring compatibility is confirmed. Older homes may need a transformer or wiring adjustment.',
-			quoteHref: 'contact.html?product=video-doorbell-kit',
-			paymentCategory: 'products',
-			paymentKey: 'videoDoorbellKit'
-		},
-		'mesh-wifi-kit': {
-			type: 'Product',
-			title: 'Mesh Wi-Fi Upgrade Kit',
-			image: 'wp-content/uploads/2023/06/wifi.webp',
-			description: 'A cleaner home network upgrade for stronger coverage, smarter device placement, and fewer dead zones.',
-			included: ['Mesh router recommendation', 'Placement plan', 'Network setup', 'Device reconnection help'],
-			bestFor: ['Home offices', 'Large homes', 'Streaming rooms', 'Outdoor cameras'],
-			note: 'Buy Now after the home size and internet plan are reviewed so the equipment is sized correctly.',
-			quoteHref: 'contact.html?product=mesh-wifi-upgrade-kit',
-			paymentCategory: 'products',
-			paymentKey: 'meshWifiKit'
-		},
-		'smart-lock-kit': {
-			type: 'Product',
-			title: 'Smart Lock Kit',
-			image: 'wp-content/uploads/2023/services/security-cameras.png',
-			description: 'Keyless entry with phone control, user codes, guest access, and a clean installation on a compatible door.',
-			included: ['Door and deadbolt compatibility review', 'Smart lock installation', 'Guest code setup', 'Owner walkthrough'],
-			bestFor: ['Front doors', 'Rental properties', 'Family access', 'Guest entry'],
-			note: 'Buy Now after door thickness, deadbolt style, and finish preference are confirmed.',
-			quoteHref: 'contact.html?product=smart-lock-kit',
-			paymentCategory: 'products',
-			paymentKey: 'smartLockKit'
-		},
-		'theater-kit': {
-			type: 'Product',
-			title: 'Home Theater Setup Kit',
-			image: 'wp-content/uploads/2023/services/home-t-desc.jpg',
-			description: 'A TV, streaming, and audio setup path for homeowners who want a clean entertainment space without guesswork.',
-			included: ['Mount and cable plan', 'Streaming device setup', 'Soundbar or receiver guidance', 'Remote and input walkthrough'],
-			bestFor: ['Living rooms', 'Media rooms', 'New TVs', 'Apartments'],
-			note: 'Buy Now after TV size, wall type, and mount details are confirmed.',
-			quoteHref: 'contact.html?product=home-theater-setup-kit',
-			paymentCategory: 'products',
-			paymentKey: 'homeTheaterSetupKit'
 		}
 	};
 
@@ -298,14 +173,14 @@
 		note.textContent = item.note;
 		quote.href = item.quoteHref || 'contact.html';
 		pay.href = '#pay-deposit';
-		pay.textContent = item.type === 'Product' ? 'Buy Now' : 'Pay Deposit';
+		pay.textContent = 'Pay Deposit';
 		pay.dataset.ctPayment = key;
-		pay.dataset.commerceAction = item.type === 'Product' ? 'buy-product' : item.type === 'Package' ? 'buy-package' : 'pay-deposit';
+		pay.dataset.commerceAction = 'pay-deposit';
 		pay.dataset.commerceCategory = item.paymentCategory || 'deposits';
 		pay.dataset.stripeLinkKey = item.paymentKey || 'default';
 		pay.dataset.service = item.type === 'Service' ? item.title : '';
-		pay.dataset.package = item.type === 'Package' ? item.title : '';
-		pay.dataset.product = item.type === 'Product' ? item.title : '';
+		pay.dataset.package = '';
+		pay.dataset.product = '';
 		pay.dataset.price = item.price || '';
 		pay.dataset.currency = item.price ? 'USD' : '';
 

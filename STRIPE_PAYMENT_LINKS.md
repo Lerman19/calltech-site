@@ -12,7 +12,7 @@ Use Stripe Payment Links for the first version of online payment. Do not put Str
 - Billing address: auto or required if needed for fraud review.
 - Terms text: "Deposit is applied to the final invoice. Final balance may vary based on equipment, wiring distance, wall type, and project scope."
 
-## Create these deposit links first
+## Create these service deposit links
 
 Create each item as a one-time Payment Link in Stripe Dashboard. After Stripe generates the URL, paste it into the matching key in `js/calltech-commerce.config.js`.
 
@@ -25,23 +25,6 @@ Create each item as a one-time Payment Link in Stripe Dashboard. After Stripe ge
 | `deposits.smartHomeHubSetup` | Smart Home Hub Setup Deposit | `$79` |
 | `deposits.unifiedHomeProtection` | Unified Home Protection Planning Deposit | `$149` |
 | `deposits.networkSetup` | Smart Wi-Fi / Network Setup Deposit | `$79` |
-| `packages.starterCameraSetup` | Starter Camera Setup Deposit | `$99` |
-| `packages.smartEntryPackage` | Smart Entry Package Deposit | `$79` |
-| `packages.wifiCoverageUpgrade` | Wi-Fi Coverage Upgrade Deposit | `$79` |
-| `packages.homeTheaterStarter` | Home Theater Starter Deposit | `$99` |
-| `packages.wholeHomeProtection` | Whole Home Protection Planning Deposit | `$149` |
-
-## Product links
-
-Product `Buy Now` links should be created only after the exact hardware choice and price are decided. Until then, the site sends the visitor to the contact form so the correct checkout link can be sent manually.
-
-| Config key | Suggested Stripe product name |
-| --- | --- |
-| `products.securityCameraKit` | Security Camera Starter Kit |
-| `products.videoDoorbellKit` | Video Doorbell Kit |
-| `products.meshWifiKit` | Mesh Wi-Fi Upgrade Kit |
-| `products.smartLockKit` | Smart Lock Kit |
-| `products.homeTheaterSetupKit` | Home Theater Setup Kit |
 
 ## Where to paste links
 

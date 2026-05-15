@@ -15,21 +15,6 @@ window.CallTechCommerceConfig = {
       smartHomeHubSetup: "#",
       unifiedHomeProtection: "#",
       networkSetup: "#"
-    },
-    packages: {
-      starterCameraSetup: "#",
-      smartEntryPackage: "#",
-      wifiCoverageUpgrade: "#",
-      homeTheaterStarter: "#",
-      wholeHomeProtection: "#"
-    },
-    products: {
-      securityCameraKit: "#",
-      videoDoorbellKit: "#",
-      meshWifiKit: "#",
-      smartLockKit: "#",
-      homeTheaterSetupKit: "#",
-      consultation: "#"
     }
   },
 
@@ -44,20 +29,14 @@ window.CallTechCommerceConfig = {
     homeTheaterInstallation: 99,
     smartHomeHubSetup: 79,
     unifiedHomeProtection: 149,
-    networkSetup: 79,
-    starterCameraSetup: 99,
-    smartEntryPackage: 79,
-    wifiCoverageUpgrade: 79,
-    homeTheaterStarter: 99,
-    wholeHomeProtection: 149
+    networkSetup: 79
   },
 
   // Future buttons/cards can use:
-  // data-commerce-action="pay-deposit|buy-package|buy-product|quote|package-view|service-view"
-  // data-stripe-link-key="starterCameraSetup"
-  // data-commerce-category="packages|deposits|products"
+  // data-commerce-action="pay-deposit|quote|service-view"
+  // data-stripe-link-key="securityCameraInstallation"
+  // data-commerce-category="deposits"
   // data-service="Security Camera Installation"
-  // data-package="Starter Camera Setup"
   // data-price="99"
   // data-currency="USD"
   debug: false

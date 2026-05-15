@@ -43,16 +43,6 @@
     "smart-home-hub-setup": "Smart Home Hub Setup",
     "unified-home-protection": "Unified Home Protection",
     "smart-wifi-network-setup": "Smart Wi-Fi / Network Setup",
-    "starter-camera-setup": "Starter Camera Setup",
-    "smart-entry-package": "Smart Entry Package",
-    "wifi-coverage-upgrade": "Wi-Fi Coverage Upgrade",
-    "home-theater-starter": "Home Theater Starter",
-    "whole-home-protection": "Whole Home Protection",
-    "security-camera-starter-kit": "Security Camera Starter Kit",
-    "video-doorbell-kit": "Video Doorbell Kit",
-    "mesh-wifi-upgrade-kit": "Mesh Wi-Fi Upgrade Kit",
-    "smart-lock-kit": "Smart Lock Kit",
-    "home-theater-setup-kit": "Home Theater Setup Kit",
   };
 
   function setStatus(message, type) {
@@ -123,7 +113,7 @@
 
   function prefillFromUrl() {
     var params = new URLSearchParams(window.location.search);
-    var requested = params.get("service") || params.get("package") || params.get("product") || params.get("item");
+    var requested = params.get("service") || params.get("item");
     var serviceField = form.elements.service;
     var messageField = form.elements.message;
 
