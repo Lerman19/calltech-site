@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /vendor/
+Disallow: /.git/
+Disallow: /wp-json/
+Disallow: /xmlrpc
+Disallow: /composer.json
+Disallow: /composer.lock
+
+Sitemap: https://calltech.pro/sitemap.xml

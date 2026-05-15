@@ -4,59 +4,128 @@ declare(strict_types=1);
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
-require __DIR__ . '/vendor/autoload.php';
-
 header('Content-Type: application/json; charset=utf-8');
+header('Cache-Control: no-store');
+
+function respond(int $statusCode, bool $ok, string $message): void
+{
+    http_response_code($statusCode);
+    echo json_encode([
+        'ok' => $ok,
+        'message' => $message,
+    ], JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+function request_data(): array
+{
+    $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+
+    if (stripos($contentType, 'application/json') !== false) {
+        $payload = json_decode((string)file_get_contents('php://input'), true);
+        return is_array($payload) ? $payload : [];
+    }
+
+    return $_POST;
+}
+
+function field(array $data, string $key, int $maxLength): string
+{
+    $value = trim((string)($data[$key] ?? ''));
+    $value = preg_replace('/[ \t]+/', ' ', $value) ?? '';
+    return substr($value, 0, $maxLength);
+}
+
+function clean_header_value(string $value): string
+{
+    return trim(str_replace(["\r", "\n"], ' ', $value));
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['ok' => false, 'message' => 'Method not allowed']);
-    exit;
+    respond(405, false, 'Method not allowed.');
 }
 
-$type = trim((string)($_POST['type'] ?? 'contact'));
-$name = trim((string)($_POST['name'] ?? ''));
-$email = trim((string)($_POST['email'] ?? ''));
-$phone = trim((string)($_POST['phone'] ?? ''));
-$message = trim((string)($_POST['message'] ?? ''));
-$service = trim((string)($_POST['service'] ?? ''));
-$location = trim((string)($_POST['location'] ?? ''));
+$data = request_data();
 
-if ($name === '' || $phone === '' || $message === '') {
-    http_response_code(422);
-    echo json_encode(['ok' => false, 'message' => 'Name, phone, and message are required']);
-    exit;
+if (field($data, 'company_website', 200) !== '') {
+    respond(200, true, 'Thank you. Your request was sent and we will follow up shortly.');
 }
 
-if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    http_response_code(422);
-    echo json_encode(['ok' => false, 'message' => 'Please enter a valid email address']);
-    exit;
+$type = field($data, 'type', 40) ?: 'quote';
+$name = field($data, 'name', 120);
+$email = field($data, 'email', 160);
+$phone = field($data, 'phone', 40);
+$service = field($data, 'service', 120);
+$location = field($data, 'location', 120);
+$message = field($data, 'message', 2000);
+
+$requiredFields = [
+    'Full name' => $name,
+    'Phone number' => $phone,
+    'Email' => $email,
+    'Service needed' => $service,
+    'City or ZIP code' => $location,
+    'Project details' => $message,
+];
+
+foreach ($requiredFields as $label => $value) {
+    if ($value === '') {
+        respond(422, false, $label . ' is required.');
+    }
+}
+
+if (strlen($name) < 2) {
+    respond(422, false, 'Please enter your name.');
+}
+
+if (!preg_match('/^[0-9+().\-\s]{7,}$/', $phone)) {
+    respond(422, false, 'Please enter a valid phone number.');
+}
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    respond(422, false, 'Please enter a valid email address.');
+}
+
+if (strlen($message) < 10) {
+    respond(422, false, 'Please add a few project details.');
 }
 
 $smtpHost = getenv('CALLTECH_SMTP_HOST') ?: '';
 $smtpUser = getenv('CALLTECH_SMTP_USER') ?: '';
 $smtpPass = getenv('CALLTECH_SMTP_PASS') ?: '';
+$smtpPort = (int)(getenv('CALLTECH_SMTP_PORT') ?: 587);
 $mailTo = getenv('CALLTECH_MAIL_TO') ?: '';
 $mailFrom = getenv('CALLTECH_MAIL_FROM') ?: $smtpUser;
+$mailFromName = getenv('CALLTECH_MAIL_FROM_NAME') ?: 'CallTech Website';
 
 if ($smtpHost === '' || $smtpUser === '' || $smtpPass === '' || $mailTo === '' || $mailFrom === '') {
-    http_response_code(500);
-    echo json_encode(['ok' => false, 'message' => 'Mail service is not configured']);
-    exit;
+    respond(500, false, 'Mail service is not configured.');
 }
 
-$body = [
+$autoloadPath = __DIR__ . '/vendor/autoload.php';
+if (!is_file($autoloadPath)) {
+    respond(500, false, 'Mail dependencies are not installed.');
+}
+
+require $autoloadPath;
+
+$lead = [
     'Lead type' => $type,
     'Name' => $name,
     'Phone' => $phone,
     'Email' => $email,
     'Service' => $service,
-    'Location' => $location,
-    'Message' => $message,
+    'City / ZIP' => $location,
+    'Project details' => $message,
     'Page' => $_SERVER['HTTP_REFERER'] ?? '',
+    'IP address' => $_SERVER['REMOTE_ADDR'] ?? '',
     'Submitted at' => gmdate('Y-m-d H:i:s') . ' UTC',
 ];
+
+$bodyLines = [];
+foreach ($lead as $key => $value) {
+    $bodyLines[] = $key . ': ' . $value;
+}
 
 try {
     $mail = new PHPMailer(true);
@@ -66,25 +135,19 @@ try {
     $mail->Username = $smtpUser;
     $mail->Password = $smtpPass;
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = (int)(getenv('CALLTECH_SMTP_PORT') ?: 587);
+    $mail->Port = $smtpPort;
 
-    $mail->setFrom($mailFrom, 'CallTech Website');
-    $mail->addAddress($mailTo, 'CallTech');
-    if ($email !== '') {
-        $mail->addReplyTo($email, $name);
-    }
+    $mail->CharSet = 'UTF-8';
+    $mail->setFrom(clean_header_value($mailFrom), clean_header_value($mailFromName));
+    $mail->addAddress(clean_header_value($mailTo), 'CallTech');
+    $mail->addReplyTo(clean_header_value($email), clean_header_value($name));
 
     $mail->isHTML(false);
-    $mail->Subject = 'New CallTech website lead';
-    $mail->Body = implode("\r\n", array_map(
-        static fn($key, $value): string => $key . ': ' . $value,
-        array_keys($body),
-        $body
-    ));
+    $mail->Subject = 'New CallTech quote request: ' . clean_header_value($service);
+    $mail->Body = implode("\r\n", $bodyLines);
 
     $mail->send();
-    echo json_encode(['ok' => true, 'message' => 'Message has been sent']);
+    respond(200, true, 'Thank you. Your request was sent and we will follow up shortly.');
 } catch (Exception $exception) {
-    http_response_code(500);
-    echo json_encode(['ok' => false, 'message' => 'Message could not be sent']);
+    respond(500, false, 'Message could not be sent. Please call us or try again later.');
 }
