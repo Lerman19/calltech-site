@@ -126,7 +126,7 @@
 			price: '79',
 			quoteHref: 'contact.html?service=smart-wifi-network-setup',
 			paymentCategory: 'deposits',
-			paymentKey: 'default'
+			paymentKey: 'networkSetup'
 		},
 		'starter-camera': {
 			type: 'Package',

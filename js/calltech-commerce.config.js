@@ -13,7 +13,8 @@ window.CallTechCommerceConfig = {
       lowVoltageWiring: "#",
       homeTheaterInstallation: "#",
       smartHomeHubSetup: "#",
-      unifiedHomeProtection: "#"
+      unifiedHomeProtection: "#",
+      networkSetup: "#"
     },
     packages: {
       starterCameraSetup: "#",
@@ -43,6 +44,7 @@ window.CallTechCommerceConfig = {
     homeTheaterInstallation: 99,
     smartHomeHubSetup: 79,
     unifiedHomeProtection: 149,
+    networkSetup: 79,
     starterCameraSetup: 99,
     smartEntryPackage: 79,
     wifiCoverageUpgrade: 79,
@@ -51,9 +53,9 @@ window.CallTechCommerceConfig = {
   },
 
   // Future buttons/cards can use:
-  // data-commerce-action="pay-deposit|buy-package|quote|package-view|service-view"
+  // data-commerce-action="pay-deposit|buy-package|buy-product|quote|package-view|service-view"
   // data-stripe-link-key="starterCameraSetup"
-  // data-commerce-category="packages|deposits"
+  // data-commerce-category="packages|deposits|products"
   // data-service="Security Camera Installation"
   // data-package="Starter Camera Setup"
   // data-price="99"
