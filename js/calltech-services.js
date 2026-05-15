@@ -143,7 +143,6 @@
 	var included = modal.querySelector('[data-ct-modal-included]');
 	var best = modal.querySelector('[data-ct-modal-best]');
 	var note = modal.querySelector('[data-ct-modal-note]');
-	var quote = modal.querySelector('[data-ct-modal-quote]');
 	var pay = modal.querySelector('[data-ct-modal-pay]');
 	var lastTrigger = null;
 
@@ -171,10 +170,6 @@
 		fillList(included, item.included);
 		fillList(best, item.bestFor);
 		note.textContent = item.note;
-		quote.href = '#quote';
-		quote.dataset.ctQuoteOpen = '';
-		quote.dataset.ctQuoteService = item.title;
-		quote.dataset.ctQuoteMessage = '';
 		pay.href = '#pay-deposit';
 		pay.textContent = 'Pay Deposit';
 		pay.dataset.ctPayment = key;
