@@ -1,0 +1,90 @@
+editor converted function definitions from:
+public static function fetchByKey( $key) {
+
+to
+
+public static function fetchByKey($key)
+{
+
+while I am ok with either style (the first is my preferred because the space after ( makes the variable much easier to quickly read to me, and the extra new line takes up precious vertical space), when the changes are integrated with a patch that actually makes changes to the code makes the patch very 'noisy'
+
+What I would suggest if you want to change the format (or that if your editor wishes to change the format, which is another issue), so to submit 2 commits.  One commit only does the formatting changes, and the other commit changes the code, so the actual changes are easy to pick out with a diff, and more importantly, a git blame/annotate is easier to find the actual logic change.  If I do a git blame and see a commit that says 'update formatting', I know I have to go to the previous commit to find the actual logic change.
+
+
+####
+For formatting my editor was making it and I've removed this so It can match same format everywhere and also I like this style of function
+public static function fetchByKey( $key) {
+
+than this
+
+public static function fetchByKey($key)
+{
+
+
+For spacing for ( $key) I would use it the idea is good and I will adopt it
+####
+
+
+For the product history, I think would should use the column name 'config' over 'updated_datas'.  It matches other tables better.  I think I would also like to just use the product_update_history table as the main config of the product, and do away with the mulitple table meta/meta_large/etc tables, so a table name of 'product_config' is better than product_update_history.  So what I would like to do is merge all of the smaller tables into a good json format for the entire config of the product, and when you 'save' a product, it will only save this json.  We can sort by product_id+created_at for the 'current' product (need to make this index).  I think we would just be left with just 'product' and 'product_config' tables.  What do you think?
+
+
+I would also like to do something similar to the product history for the gw_config, so we can know what the actual gateway keys/config at the time of transactions (or attempts).
+
+
+####
+So the idea is instead of having all these tables and saving them separately you only want to have one table that will keep all datas as json and save it?
+To elaborate: we will have 2 table after this 1 is product which will keep main info about product itself and 2nd product_config which will hold all updates for these smaller tables?
+
+
+Leave tables as it's
+product_affiliate (unused table)
+product_affiliate_click      
+product_affiliate_commission 
+
+
+-> product_id => product_config_id
+
+updated_datas => config
+product_update_history => product_config
+
+
+name  | amount in  config table
+
+commission => 0 | remove from backend create product view 
+
+product_flag | product_meta_large | product_meta (merge product_meta_large & product_meta)
+
+In product 
+
+Id | vendor_id | created_at
+
+
+In product_config
+
+id | product_id | name | amount | config | created_at
+
+####
+
+in Product::addFlag(), you comment out the old code.  No reason to do this as git already tracks the old code (if this is still a work in progress, ignore this, as having the old code there to reference immediately can be useful, but should definitely be removed before a PR is submitted unless there is a specific reason for the code there.. like a comment about how a bug was fixed with the old code as an explanation)
+
+
+
+on with ->with() joining, you can give the relationship an alias, so you don't have to do a bunch of static::tableName(), which may not even work correctly because of the '%table_name%' naming
+example: ->with('metaLarge ml')
+but it looks like in this case (Product::fetchAllProductDataByKey), you want to keep those names because that matches what the python script is using.
+
+
+
+One improvement for the python script is to add a yii cli command to export the database connection (ie, print the dsn as json) so python can import the config to use.. or at least make a way to edit the db config for python from a single place (so each python script doesn't need it's own db config)
+
+####
+Sure I would check to add it.
+Actually in the python script there could be a lot improvements yet I just kept it simple for now
+####
+
+
+looks like there were some changes/commits in common/tests/fixtures as well as composer.lock that shouldn't be there
+
+####
+It should because of the 'composer exec codecept run' that has been updated the dates in those files
+####
