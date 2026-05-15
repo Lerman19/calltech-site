@@ -39,6 +39,7 @@
 	text-align: center;
 }
 
+.ct-section-head h1,
 .ct-section-head h2 {
 	color: #10201d;
 	font-size: 42px;
@@ -765,6 +766,7 @@ body.ct-modal-open {
 		padding: 58px 16px;
 	}
 
+	.ct-section-head h1,
 	.ct-section-head h2 {
 		font-size: 31px;
 	}

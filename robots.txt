@@ -5,6 +5,7 @@ Disallow: /vendor/
 Disallow: /.git/
 Disallow: /wp-json/
 Disallow: /xmlrpc
+Disallow: /index-1.html
 Disallow: /composer.json
 Disallow: /composer.lock
 
