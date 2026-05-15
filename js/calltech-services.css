@@ -4,6 +4,13 @@
 	padding: 84px 20px;
 }
 
+.elementor-element-b1200ae,
+.elementor-element-4feb823,
+.elementor-element-28bdadc,
+.elementor-element-618a938 {
+	display: none !important;
+}
+
 .ct-services-wrap {
 	max-width: 1180px;
 	margin: 0 auto;
