@@ -7,6 +7,9 @@
   var status = document.getElementById("contactFormStatus");
   var submitButton = form.querySelector(".calltech-submit-button");
   var submitLabel = form.querySelector("[data-submit-label]");
+  var quoteModal = document.querySelector("[data-ct-quote-modal]");
+  var quotePanel = quoteModal ? quoteModal.querySelector(".ct-quote-panel") : null;
+  var lastQuoteTrigger = null;
 
   var validators = {
     name: function (value) {
@@ -55,6 +58,68 @@
 
     if (type) {
       status.classList.add("is-" + type);
+    }
+  }
+
+  function setService(value) {
+    var serviceField = form.elements.service;
+
+    if (!serviceField) {
+      return;
+    }
+
+    var matchingOption = Array.prototype.slice.call(serviceField.options).some(function (option) {
+      return option.value === value;
+    });
+
+    serviceField.value = matchingOption ? value : "Other / Not Sure";
+  }
+
+  function openQuoteModal(trigger) {
+    if (!quoteModal) {
+      return;
+    }
+
+    var dataset = trigger.dataset || {};
+    var service = dataset.ctQuoteService || dataset.service || "";
+    var message = dataset.ctQuoteMessage || "";
+    var detailModal = document.querySelector("[data-ct-modal]");
+
+    lastQuoteTrigger = trigger;
+    setStatus("");
+
+    if (service) {
+      setService(service);
+    } else if (message) {
+      setService("Other / Not Sure");
+    }
+
+    if (message && form.elements.message) {
+      form.elements.message.value = message;
+    }
+
+    if (detailModal) {
+      detailModal.hidden = true;
+    }
+
+    quoteModal.hidden = false;
+    document.body.classList.add("ct-modal-open");
+
+    if (quotePanel) {
+      quotePanel.focus();
+    }
+  }
+
+  function closeQuoteModal() {
+    if (!quoteModal) {
+      return;
+    }
+
+    quoteModal.hidden = true;
+    document.body.classList.remove("ct-modal-open");
+
+    if (lastQuoteTrigger) {
+      lastQuoteTrigger.focus();
     }
   }
 
@@ -122,11 +187,7 @@
     }
 
     var value = serviceMap[requested] || requested;
-    var matchingOption = Array.prototype.slice.call(serviceField.options).some(function (option) {
-      return option.value === value;
-    });
-
-    serviceField.value = matchingOption ? value : "Other / Not Sure";
+    setService(value);
 
     if (messageField && !messageField.value && params.get("payment")) {
       messageField.value = "I would like to pay online for: " + value + ". Please send me the correct checkout link.";
@@ -134,6 +195,27 @@
   }
 
   prefillFromUrl();
+
+  document.addEventListener("click", function (event) {
+    var opener = event.target.closest("[data-ct-quote-open]");
+
+    if (opener) {
+      event.preventDefault();
+      openQuoteModal(opener);
+      return;
+    }
+
+    if (event.target.closest("[data-ct-quote-close]")) {
+      event.preventDefault();
+      closeQuoteModal();
+    }
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && quoteModal && !quoteModal.hidden) {
+      closeQuoteModal();
+    }
+  });
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();

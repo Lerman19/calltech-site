@@ -1001,7 +1001,7 @@
 													<strong>Secure checkout through Stripe</strong>
 													<span>Book service with a deposit, pay the remaining balance after the scope is confirmed, and receive an automatic receipt.</span>
 												</div>
-												<a class="ct-btn ct-btn-ghost" href="contact.html?payment=question">Ask a Payment Question</a>
+												<button type="button" class="ct-btn ct-btn-ghost" data-ct-quote-open data-ct-quote-message="I have a question about paying online for service.">Ask a Payment Question</button>
 											</div>
 
 											<div class="ct-grid ct-services-grid" aria-label="CallTech services">
@@ -1140,7 +1140,7 @@
 														<div class="ct-card-actions">
 															<button type="button" class="ct-btn ct-btn-primary" data-ct-open="network-setup">Schedule Service</button>
 															<a class="ct-btn ct-btn-pay" href="#pay-deposit" data-commerce-action="pay-deposit" data-commerce-category="deposits" data-stripe-link-key="networkSetup" data-service="Smart Wi-Fi / Network Setup" data-price="79" data-currency="USD">Pay Deposit</a>
-															<a class="ct-btn ct-btn-ghost" href="contact.html">Get Help</a>
+															<button type="button" class="ct-btn ct-btn-ghost" data-ct-quote-open data-ct-quote-service="Smart Wi-Fi / Network Setup">Get Help</button>
 														</div>
 													</div>
 												</article>
@@ -1172,9 +1172,74 @@
 												</div>
 												<p class="ct-modal-note" data-ct-modal-note></p>
 												<div class="ct-modal-actions">
-													<a class="ct-btn ct-btn-primary" data-ct-modal-quote href="contact.html">Get a Free Quote</a>
+													<a class="ct-btn ct-btn-primary" data-ct-modal-quote href="#quote">Get a Free Quote</a>
 													<a class="ct-btn ct-btn-pay" data-ct-modal-pay href="#pay-deposit">Pay Deposit</a>
 												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="ct-modal ct-quote-modal" data-ct-quote-modal hidden>
+										<div class="ct-modal-backdrop" data-ct-quote-close></div>
+										<div class="ct-quote-panel" role="dialog" aria-modal="true" aria-labelledby="ct-quote-title" tabindex="-1">
+											<button type="button" class="ct-modal-close" data-ct-quote-close aria-label="Close quote form">x</button>
+											<div class="ct-quote-content">
+												<p class="ct-eyebrow">Request service</p>
+												<h2 id="ct-quote-title">Get a Free Quote</h2>
+												<p>Tell us what you need installed or configured. A CallTech specialist will review your request and follow up with next steps.</p>
+												<form id="contactForm" class="calltech-quote-form" action="email.php" method="post" novalidate>
+													<input type="hidden" name="type" value="quote">
+													<div class="calltech-honeypot" aria-hidden="true">
+														<label for="company_website">Company website</label>
+														<input id="company_website" name="company_website" type="text" tabindex="-1" autocomplete="off">
+													</div>
+													<div class="calltech-field">
+														<label for="name">Full name *</label>
+														<input id="name" name="name" type="text" autocomplete="name" maxlength="120" required>
+														<span class="calltech-field-error" data-error-for="name"></span>
+													</div>
+													<div class="calltech-field">
+														<label for="phone">Phone number *</label>
+														<input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40" required>
+														<span class="calltech-field-error" data-error-for="phone"></span>
+													</div>
+													<div class="calltech-field">
+														<label for="email">Email *</label>
+														<input id="email" name="email" type="email" autocomplete="email" maxlength="160" required>
+														<span class="calltech-field-error" data-error-for="email"></span>
+													</div>
+													<div class="calltech-field">
+														<label for="location">City or ZIP code *</label>
+														<input id="location" name="location" type="text" autocomplete="postal-code" maxlength="120" required>
+														<span class="calltech-field-error" data-error-for="location"></span>
+													</div>
+													<div class="calltech-field calltech-field-full">
+														<label for="service">Service needed *</label>
+														<select id="service" name="service" required>
+															<option value="">Select a service</option>
+															<option value="Security Camera Installation">Security Camera Installation</option>
+															<option value="Video Doorbell & Smart Lock Installation">Video Doorbell & Smart Lock Installation</option>
+															<option value="Low Voltage Wiring">Low Voltage Wiring</option>
+															<option value="Home Theater Installation">Home Theater Installation</option>
+															<option value="Smart Home Hub Setup">Smart Home Hub Setup</option>
+															<option value="Unified Home Protection">Unified Home Protection</option>
+															<option value="Smart Wi-Fi / Network Setup">Smart Wi-Fi / Network Setup</option>
+															<option value="Other / Not Sure">Other / Not Sure</option>
+														</select>
+														<span class="calltech-field-error" data-error-for="service"></span>
+													</div>
+													<div class="calltech-field calltech-field-full">
+														<label for="message">Project details *</label>
+														<textarea id="message" name="message" rows="5" maxlength="2000" required placeholder="Briefly describe your project, preferred timing, and any equipment you already have."></textarea>
+														<span class="calltech-field-error" data-error-for="message"></span>
+													</div>
+													<div class="calltech-form-actions">
+														<button class="calltech-submit-button" type="submit">
+															<span data-submit-label>Send request</span>
+														</button>
+														<div id="contactFormStatus" class="calltech-form-status" role="status" aria-live="polite"></div>
+													</div>
+												</form>
 											</div>
 										</div>
 									</div>

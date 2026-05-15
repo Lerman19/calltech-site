@@ -171,7 +171,10 @@
 		fillList(included, item.included);
 		fillList(best, item.bestFor);
 		note.textContent = item.note;
-		quote.href = item.quoteHref || 'contact.html';
+		quote.href = '#quote';
+		quote.dataset.ctQuoteOpen = '';
+		quote.dataset.ctQuoteService = item.title;
+		quote.dataset.ctQuoteMessage = '';
 		pay.href = '#pay-deposit';
 		pay.textContent = 'Pay Deposit';
 		pay.dataset.ctPayment = key;
